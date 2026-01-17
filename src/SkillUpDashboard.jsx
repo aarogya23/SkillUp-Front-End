@@ -3,8 +3,8 @@ import React from 'react';
 
 import logo from './assets/image 1.png';
 import dashboardIcon from './assets/dot.png';
-// import booksIcon from './assets/books-icon.png';
-// import bulbIcon from './assets/bulb-icon.png';
+import school from './assets/school.png';
+import bulbIcon from './assets/idea.png';
 // import chatIcon from './assets/chat-icon.png';
 // import headphoneIcon from './assets/headphone-icon.png';
 // import settingsIcon from './assets/settings-icon.png';
@@ -97,11 +97,11 @@ const SkillUpDashboard = () => {
             {/* ▦ */}
           </button>
           <button className="w-14 h-14 rounded-xl flex items-center justify-center hover:bg-black hover:bg-opacity-15 transition-all">
-            <img src="/path/to/books-icon.png" alt="Books" className="w-7 h-7" />
+            <img src={school} alt="Books" className="w-5 h-5" />
             {/* 📚 */}
           </button>
           <button className="w-14 h-14 rounded-xl flex items-center justify-center hover:bg-black hover:bg-opacity-15 transition-all">
-            <img src="/path/to/bulb-icon.png" alt="Ideas" className="w-7 h-7" />
+            <img src={bulbIcon} alt="Ideas" className="w-4 h-6" />
             {/* 💡 */}
           </button>
           <button className="w-14 h-14 rounded-xl flex items-center justify-center hover:bg-black hover:bg-opacity-15 transition-all">
