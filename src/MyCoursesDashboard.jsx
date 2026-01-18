@@ -1,8 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Sidebar from './Sidebar'
 
 const MyCoursesDashboard = () => {
   const [selectedDate, setSelectedDate] = useState(29)
+  const [showCelebration, setShowCelebration] = useState(false)
+  const [progress] = useState(100) // Change this to 100 to trigger celebration
+
+  useEffect(() => {
+    if (progress === 100) {
+      setShowCelebration(true)
+      const timer = setTimeout(() => setShowCelebration(false), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [progress])
 
   const enrolledCourses = [
     {
@@ -108,18 +118,44 @@ const MyCoursesDashboard = () => {
     </div>
   )
 
-  const calendar = [
-    { day: 'Mon', dates: [26, 27, 28, 29, 30] },
-    { day: 'Tue', dates: [27] },
-    { day: 'Wed', dates: [28] },
-    { day: 'Thu', dates: [29] },
-    { day: 'Fri', dates: [30, 1] },
-    { day: 'Sat', dates: [2] },
-    { day: 'Sun', dates: [3] }
-  ]
-
   return (
     <div className="flex min-h-screen bg-gray-50">
+      {/* CELEBRATION POPUP */}
+      {showCelebration && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 celebration-fadeIn">
+          <div className="bg-white rounded-3xl p-8 max-w-md mx-4 shadow-2xl celebration-scaleIn">
+            <div className="text-center">
+              {/* Confetti emojis */}
+              <div className="text-6xl mb-4 animate-bounce">🎉</div>
+              
+              {/* Trophy animation */}
+              <div className="relative inline-block mb-4">
+                <div className="text-8xl celebration-wiggle">🏆</div>
+                <div className="absolute -top-2 -right-2 text-3xl celebration-spin">✨</div>
+                <div className="absolute -bottom-2 -left-2 text-3xl celebration-spin celebration-delay">✨</div>
+              </div>
+              
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">Congratulations!</h2>
+              <p className="text-xl text-gray-600 mb-4">You've completed 100% of your journey!</p>
+              
+              {/* Progress bar animation */}
+              <div className="bg-gray-200 rounded-full h-3 mb-6 overflow-hidden">
+                <div className="celebration-fillBar bg-gradient-to-r from-green-400 to-blue-500 h-full rounded-full"></div>
+              </div>
+              
+              <p className="text-gray-500 mb-6">You're now a <span className="font-bold text-blue-600">Beginner</span> level achiever!</p>
+              
+              <button 
+                onClick={() => setShowCelebration(false)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
+              >
+                Awesome! 🚀
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* SIDEBAR */}
       <Sidebar />
 
@@ -188,14 +224,14 @@ const MyCoursesDashboard = () => {
             {/* Progress Path/Bar */}
             <div className="absolute bottom-10 left-12 right-12">
               <div className="bg-purple-300 bg-opacity-50 h-3 rounded-full relative shadow-inner">
-                <div className="absolute left-0 top-0 bottom-0 w-[30%] bg-purple-600 rounded-full shadow-lg">
+                <div className="absolute left-0 top-0 bottom-0 w-[100%] bg-purple-600 rounded-full shadow-lg">
                   <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-white border-4 border-purple-600 rounded-full"></div>
                 </div>
               </div>
             </div>
 
             {/* Labels */}
-            <div className="absolute bottom-2 left-12 text-sm font-bold text-purple-700">30%</div>
+            <div className="absolute bottom-2 left-12 text-sm font-bold text-purple-700">100%</div>
             <div className="absolute bottom-2 right-12">
               <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">Beginner</span>
             </div>
@@ -320,6 +356,63 @@ const MyCoursesDashboard = () => {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+          from { 
+            transform: scale(0.8);
+            opacity: 0;
+          }
+          to { 
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+        
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(-5deg); }
+          50% { transform: rotate(5deg); }
+        }
+        
+        @keyframes spinSlow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fillBar {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+        
+        .celebration-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+        
+        .celebration-scaleIn {
+          animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .celebration-wiggle {
+          animation: wiggle 1s ease-in-out infinite;
+        }
+        
+        .celebration-spin {
+          animation: spinSlow 3s linear infinite;
+        }
+        
+        .celebration-delay {
+          animation-delay: 0.5s;
+        }
+        
+        .celebration-fillBar {
+          animation: fillBar 2s ease-out forwards;
+        }
+      `}</style>
     </div>
   )
 }
