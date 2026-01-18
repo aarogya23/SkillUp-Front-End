@@ -106,57 +106,57 @@ const SkillUpDashboard = () => {
           </div>
 
           {/* SINGLE PROGRESS RING LIKE IMAGE */}
-<div className="bg-white border rounded-xl p-6 w-72 flex flex-col items-center">
-  <p className="text-xs text-gray-400 font-semibold mb-4">PROGRESS</p>
+          <div className="bg-white border rounded-xl p-6 w-72 flex flex-col items-center">
+            <p className="text-xs text-gray-400 font-semibold mb-4">PROGRESS</p>
 
-  <div className="relative w-36 h-36">
-    <svg viewBox="0 0 36 36" className="-rotate-90 w-full h-full">
-      {/* Background Circle */}
-      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#F3F4F6" strokeWidth="3" />
-      
-      {/* Courses Outer Circle */}
-      <circle
-        cx="18"
-        cy="18"
-        r="15.9155"
-        fill="none"
-        stroke="#1D4ED8"
-        strokeWidth="3"
-        strokeDasharray={`${(45 / 100) * 100}, 100`}
-      />
+            <div className="relative w-36 h-36">
+              <svg viewBox="0 0 36 36" className="-rotate-90 w-full h-full">
+                {/* Background Circle */}
+                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#F3F4F6" strokeWidth="3" />
 
-      {/* Test Series Inner Circle */}
-      <circle
-        cx="18"
-        cy="18"
-        r="12"
-        fill="none"
-        stroke="#3B82F6"
-        strokeWidth="3"
-        strokeDasharray={`${(80 / 100) * 100}, 100`}
-      />
-    </svg>
+                {/* Courses Outer Circle */}
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="15.9155"
+                  fill="none"
+                  stroke="#1D4ED8"
+                  strokeWidth="3"
+                  strokeDasharray={`${coursesProgress}, 100`}
+                />
 
-    {/* Center Text */}
-    <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-      <span className="text-2xl font-semibold text-gray-800">45%</span>
-      <span className="text-sm text-blue-500">80%</span>
-    </div>
-  </div>
+                {/* Test Series Inner Circle */}
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="12"
+                  fill="none"
+                  stroke="#3B82F6"
+                  strokeWidth="3"
+                  strokeDasharray={`${testSeriesProgress}, 100`}
+                />
+              </svg>
 
-  {/* Legend */}
-  <div className="flex gap-4 mt-4 text-xs">
-    <div className="flex items-center gap-1">
-      <span className="w-3 h-3 bg-blue-800 rounded-full"></span>
-      <span>Courses</span>
-    </div>
-    <div className="flex items-center gap-1">
-      <span className="w-3 h-3 bg-blue-400 rounded-full"></span>
-      <span>Test Series</span>
-    </div>
-  </div>
-</div>
+              {/* Center Text */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span className="text-2xl font-semibold text-gray-800">{coursesProgress}%</span>
+                <span className="text-sm text-blue-500">{testSeriesProgress}%</span>
+              </div>
+            </div>
 
+            {/* Legend */}
+            <div className="flex gap-4 mt-4 text-xs">
+              <div className="flex items-center gap-1">
+                <span className="w-3 h-3 bg-blue-800 rounded-full"></span>
+                <span>Courses</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-3 h-3 bg-blue-400 rounded-full"></span>
+                <span>Test Series</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* MY COURSES */}
         <p className="text-xs text-gray-400 font-semibold mb-4">MY COURSES</p>
