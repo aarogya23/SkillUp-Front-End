@@ -6,6 +6,7 @@ import SkillUpDashboard from "./SkillUpDashboard"
 import MyCoursesDashboard from "./MyCoursesDashboard"
 import TestDashboard from "./TestDashboard"
 import Message from "./Message"
+import LiveClasses from "./LiveClass"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/courses" element={<MyCoursesDashboard/>} />
       <Route path="/ideas" element={<TestDashboard/>} />
       <Route path="/chat" element={<Message/>} />
+      <Route path="/live" element={<LiveClasses/>} />
     </Routes>
   )
 }
