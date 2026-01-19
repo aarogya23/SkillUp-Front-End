@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import logo from './assets/logo.png' // 👈 put your logo image here
 
 function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header>
-      <nav className="container">
-        <div className="logo">SkillUp</div>
+    <header className="navbar-header">
+      <nav className="navbar container">
+        {/* LOGO */}
+        <div className="logo">
+          <img src={logo} alt="SkillUp Logo" />
+        </div>
 
+        {/* LINKS */}
         <ul className={`nav-links ${open ? 'mobile-open' : ''}`}>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
@@ -16,12 +21,14 @@ function Navbar() {
           <li><a href="#contact">Contact</a></li>
         </ul>
 
+        {/* BUTTON */}
         <div className="auth-buttons">
           <Link to="/dashboard" className="btn btn-primary">
             Dashboard
           </Link>
         </div>
 
+        {/* MOBILE MENU */}
         <button className="mobile-menu-btn" onClick={() => setOpen(!open)}>
           ☰
         </button>

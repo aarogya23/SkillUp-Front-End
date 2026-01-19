@@ -7,6 +7,7 @@ function Dashboard() {
 
   const navigate = useNavigate();
 
+  const LOGIN_API = "http://localhost:8083/api/auth/login";
 
   const API_URL = "http://localhost:8083/api/users/save";
 
@@ -34,14 +35,49 @@ function Dashboard() {
     }));
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (!formData.email || !formData.password) {
-      alert("Please enter email and password");
-      return;
-    }
-    alert(`Logged in as ${formData.email}`);
+ const handleLogin = async (e) => {
+  e.preventDefault();
+
+  if (!formData.email || !formData.password) {
+    alert("Please enter email/username and password");
+    return;
+  }
+
+  const loginData = {
+    emailOrUsername: formData.email, // can be email OR username
+    password: formData.password,
   };
+
+  try {
+    const response = await fetch(LOGIN_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      throw new Error(errorMsg);
+    }
+
+    const user = await response.json();
+    console.log("Logged in user:", user);
+
+    alert("Login successful ✅");
+
+    // Optional: save user info
+    localStorage.setItem("user", JSON.stringify(user));
+
+    navigate("/home"); // redirect after login
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message || "Invalid login credentials ❌");
+  }
+};
+
 
   const handleSignup = async (e) => {
   e.preventDefault();
