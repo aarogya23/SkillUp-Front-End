@@ -9,6 +9,14 @@ import Live from './assets/live.png'
 import chat from './assets/chat.png'
 import profile from './assets/profile.png'
 
+// Import user and mentor images
+import userImage from './assets/user-profile.png' // Add your user profile image
+import mentor1 from './assets/tt.png' // Add your mentor images
+import mentor2 from './assets/tt.png'
+import mentor3 from './assets/tt.png'
+import mentor4 from './assets/tt.png'
+import mentor5 from './assets/tt.png'
+
 const navStyle = ({ isActive }) =>
   `w-14 h-14 rounded-xl flex items-center justify-center transition-all
    ${isActive
@@ -20,11 +28,11 @@ const Sidebar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const mentors = [
-    { id: 1, name: 'Prashant Kumar Singh', role: 'Software Developer' },
-    { id: 2, name: 'Prashant Kumar Singh', role: 'Software Developer' },
-    { id: 3, name: 'Prashant Kumar Singh', role: 'Software Developer' },
-    { id: 4, name: 'Prashant Kumar Singh', role: 'Software Developer' },
-    { id: 5, name: 'Prashant Kumar Singh', role: 'Software Developer' },
+    { id: 1, name: 'Prashant Kumar Singh', role: 'Software Developer', image: mentor1 },
+    { id: 2, name: 'Prashant Kumar Singh', role: 'Software Developer', image: mentor2 },
+    { id: 3, name: 'Prashant Kumar Singh', role: 'Software Developer', image: mentor3 },
+    { id: 4, name: 'Prashant Kumar Singh', role: 'Software Developer', image: mentor4 },
+    { id: 5, name: 'Prashant Kumar Singh', role: 'Software Developer', image: mentor5 },
   ];
 
   return (
@@ -134,9 +142,12 @@ const Sidebar = () => {
               </svg>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center overflow-hidden">
-                  <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-3xl">
-                    👨‍💼
-                  </div>
+                  {/* User Profile Image */}
+                  <img 
+                    src={userImage} 
+                    alt="User Profile" 
+                    className="w-20 h-20 rounded-full object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -207,9 +218,12 @@ const Sidebar = () => {
                   className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg">
-                      👨‍💼
-                    </div>
+                    {/* Mentor Profile Image */}
+                    <img 
+                      src={mentor.image} 
+                      alt={mentor.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
                     <div>
                       <p className="text-sm font-medium text-gray-800">
                         {mentor.name}
