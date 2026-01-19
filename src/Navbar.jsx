@@ -9,9 +9,26 @@ function Navbar() {
     <header className="navbar-header">
       <nav className="navbar container">
         {/* LOGO */}
-        <div className="logo">
-          <img src={logo} alt="SkillUp Logo" />
-        </div>
+       <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "20px",
+  }}
+>
+  <img
+    src={logo}
+    alt="SkillUp Logo"
+    style={{
+      width: "140px",
+      height: "auto",
+      objectFit: "contain",
+      cursor: "pointer"
+    }}
+  />
+</div>
+
 
         {/* LINKS */}
         <ul className={`nav-links ${open ? 'mobile-open' : ''}`}>

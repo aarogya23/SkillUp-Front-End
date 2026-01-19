@@ -43,40 +43,39 @@ function Dashboard() {
     return;
   }
 
-  const loginData = {
-    emailOrUsername: formData.email, // can be email OR username
-    password: formData.password,
-  };
-
   try {
     const response = await fetch(LOGIN_API, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(loginData),
+      body: JSON.stringify({
+        emailOrUsername: formData.email,
+        password: formData.password,
+      }),
     });
 
+    const data = await response.json(); // ✅ ALWAYS parse JSON
+
     if (!response.ok) {
-      const errorMsg = await response.text();
-      throw new Error(errorMsg);
+      throw new Error(data.message || "Login failed");
     }
 
-    const user = await response.json();
-    console.log("Logged in user:", user);
+    console.log("Logged in user:", data);
 
     alert("Login successful ✅");
 
-    // Optional: save user info
-    localStorage.setItem("user", JSON.stringify(user));
+    // Save logged-in user
+    localStorage.setItem("user", JSON.stringify(data));
 
-    navigate("/home"); // redirect after login
+    navigate("/home");
 
   } catch (error) {
     console.error(error);
     alert(error.message || "Invalid login credentials ❌");
   }
 };
+
 
 
   const handleSignup = async (e) => {
