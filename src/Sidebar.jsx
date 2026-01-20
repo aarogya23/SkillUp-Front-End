@@ -44,7 +44,7 @@ const Sidebar = () => {
       >
         {/* Logo */}
         <div className="text-center mb-6">
-          <img src={logo} alt="Skill Up Logo" className="w-16 h-16 mx-auto" />
+          <img src={logo} alt="Skill Up Logo" className="w-24 h-16 mx-auto" />
         </div>
 
         {/* Nav Icons */}
