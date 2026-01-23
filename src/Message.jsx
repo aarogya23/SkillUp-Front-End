@@ -1,79 +1,96 @@
-import React, { useEffect, useState } from 'react'
-import Sidebar from './Sidebar'
+import React, { useEffect, useState, useRef } from "react";
+import Sidebar from "./Sidebar";
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
 
 const Message = () => {
-  const [selectedChat, setSelectedChat] = useState(1)
-  const [messageText, setMessageText] = useState('')
-  const [messages, setMessages] = useState([]) // 🔴 dynamic messages
-  const [socket, setSocket] = useState(null)
+  const [selectedChat, setSelectedChat] = useState(1);
+  const [messageText, setMessageText] = useState("");
+  const [messages, setMessages] = useState([]);
+  const stompClientRef = useRef(null);
 
-  const username = "me" // replace with logged-in user
+  const username = "me"; // replace with logged-in user
 
-  // 🔌 WebSocket connection
+  // 🔌 WebSocket (SockJS + STOMP)
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080/ws/chat")
+    const socket = new SockJS("http://localhost:8083/ws");
 
-    ws.onopen = () => {
-      console.log("WebSocket connected")
-    }
+    const stompClient = new Client({
+      webSocketFactory: () => socket,
+      reconnectDelay: 5000,
 
-    ws.onmessage = (event) => {
-      setMessages(prev => [
-        ...prev,
-        {
-          id: Date.now(),
-          text: event.data,
-          isMine: event.data.startsWith(username),
-          time: new Date().toLocaleTimeString()
-        }
-      ])
-    }
+      onConnect: () => {
+        console.log("Connected to WebSocket");
 
-    ws.onclose = () => {
-      console.log("WebSocket disconnected")
-    }
+        // Subscribe to public chat
+        stompClient.subscribe("/topic/public", (payload) => {
+          const msg = JSON.parse(payload.body);
 
-    setSocket(ws)
-    return () => ws.close()
-  }, [])
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now(),
+              text: msg.content,
+              isMine: msg.sender === username,
+              time: new Date().toLocaleTimeString(),
+            },
+          ]);
+        });
 
-  // 📤 Send message via REST API
-  const sendMessage = async () => {
-    if (!messageText.trim()) return
+        // JOIN message (optional)
+        stompClient.publish({
+          destination: "/app/chat.join",
+          body: JSON.stringify({
+            sender: username,
+            type: "JOIN",
+            content: "",
+          }),
+        });
+      },
+    });
 
-    await fetch("http://localhost:8083/api/messages/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    stompClient.activate();
+    stompClientRef.current = stompClient;
+
+    return () => stompClient.deactivate();
+  }, []);
+
+  // 📤 Send message via WebSocket
+  const sendMessage = () => {
+    if (!messageText.trim()) return;
+
+    stompClientRef.current.publish({
+      destination: "/app/chat.send",
       body: JSON.stringify({
         sender: username,
-        receiver: "user1",
-        content: messageText
-      })
-    })
+        content: messageText,
+        type: "CHAT",
+      }),
+    });
 
-    setMessageText("")
-  }
+    setMessageText("");
+  };
 
   const conversations = [
-    { id: 1, name: 'Ramesh Kumar', avatar: 1, online: true },
-    { id: 2, name: 'Study Group - DSA', avatar: 5 },
-    { id: 3, name: 'Priya Sharma', avatar: 8 }
-  ]
+    { id: 1, name: "Ramesh Kumar", avatar: 1, online: true },
+    { id: 2, name: "Study Group - DSA", avatar: 5 },
+    { id: 3, name: "Priya Sharma", avatar: 8 },
+  ];
 
-  const activeChat = conversations.find(c => c.id === selectedChat)
+  const activeChat = conversations.find((c) => c.id === selectedChat);
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      {/* CONVERSATIONS LIST (UNCHANGED) */}
+      {/* CONVERSATIONS */}
       <div className="w-96 bg-white border-r">
-        {conversations.map(conv => (
+        {conversations.map((conv) => (
           <div
             key={conv.id}
             onClick={() => setSelectedChat(conv.id)}
             className={`p-4 cursor-pointer ${
-              selectedChat === conv.id ? 'bg-blue-50' : ''
+              selectedChat === conv.id ? "bg-blue-50" : ""
             }`}
           >
             {conv.name}
@@ -90,16 +107,16 @@ const Message = () => {
 
         {/* MESSAGES */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
-          {messages.map(msg => (
+          {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex ${msg.isMine ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${msg.isMine ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`rounded-2xl px-4 py-2 max-w-md ${
                   msg.isMine
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white border'
+                    ? "bg-blue-500 text-white"
+                    : "bg-white border"
                 }`}
               >
                 <p className="text-sm">{msg.text}</p>
@@ -119,6 +136,7 @@ const Message = () => {
             onChange={(e) => setMessageText(e.target.value)}
             className="flex-1 border rounded-full px-4 py-2"
             placeholder="Type a message..."
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
           <button
             onClick={sendMessage}
@@ -129,12 +147,12 @@ const Message = () => {
         </div>
       </div>
 
-      {/* RIGHT PANEL (UNCHANGED UI) */}
+      {/* RIGHT PANEL */}
       <div className="w-80 bg-white border-l p-6">
         <p className="text-gray-500">User Info Panel</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Message
+export default Message;
