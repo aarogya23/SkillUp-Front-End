@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Sidebar from "./Sidebar";
-import SockJS from "sockjs-client";
+import SockJS from "sockjs-client/dist/sockjs";
+
 import { Client } from "@stomp/stompjs";
 
 const Message = () => {
