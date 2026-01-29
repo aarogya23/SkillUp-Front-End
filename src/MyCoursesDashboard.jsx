@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from './Sidebar'
+import { useNavigate } from "react-router-dom";
+
 
 const MyCoursesDashboard = () => {
   const [selectedDate, setSelectedDate] = useState(29)
@@ -45,60 +47,36 @@ const MyCoursesDashboard = () => {
     </div>
   )
 
-  const CourseCard = ({ course }) => (
-    <div className={`${course.color} rounded-xl p-4 flex items-center gap-4`}>
+  const CourseCard = ({ course }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div
+      onClick={() => navigate(`/courses/${course.id}`)}
+      className={`${course.color} rounded-xl p-4 flex items-center gap-4 cursor-pointer hover:scale-[1.01] transition`}
+    >
       <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-2xl">
         {course.icon}
       </div>
+
       <div className="flex-1">
         <h3 className="text-sm font-semibold mb-1">{course.title}</h3>
+
         <div className="flex items-center gap-3 text-xs text-gray-600">
+          <span>{course.level}</span>
           {course.progress > 0 && (
-            <>
-              <span>Progress</span>
-              <div className="flex-1 max-w-[100px] bg-white rounded-full h-1.5">
-                <div 
-                  className="bg-blue-600 h-1.5 rounded-full" 
-                  style={{ width: `${course.progress}%` }}
-                />
-              </div>
-            </>
-          )}
-          {course.badge && (
-            <span className="bg-blue-500 text-white px-2 py-0.5 rounded text-xs">
-              {course.badge}
-            </span>
+            <div className="flex-1 max-w-[100px] bg-white rounded-full h-1.5">
+              <div
+                className="bg-blue-600 h-1.5 rounded-full"
+                style={{ width: `${course.progress}%` }}
+              />
+            </div>
           )}
         </div>
       </div>
-      <div className="flex items-center gap-3 text-xs">
-        {course.videos && (
-          <div className="flex items-center gap-1 bg-white px-2 py-1 rounded">
-            <span>📹</span>
-            <span>{course.videos}/{course.duration}</span>
-          </div>
-        )}
-        {course.quizzes && (
-          <div className="flex items-center gap-1 bg-white px-2 py-1 rounded">
-            <span>📝</span>
-            <span>{course.quizzes}</span>
-          </div>
-        )}
-        {course.duration && !course.videos && (
-          <div className="flex items-center gap-1 bg-white px-2 py-1 rounded">
-            <span>{course.duration}</span>
-          </div>
-        )}
-        {course.certificate && (
-          <button className="flex items-center gap-1 bg-white px-2 py-1 rounded hover:bg-gray-50">
-            <span>🏆</span>
-            <span>View Certificate</span>
-          </button>
-        )}
-      </div>
-      <button className="text-gray-600 hover:text-gray-800">⋮</button>
     </div>
-  )
+  );
+};
 
   return (
     <div className="flex min-h-screen bg-gray-50">
