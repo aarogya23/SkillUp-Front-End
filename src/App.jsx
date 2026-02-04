@@ -19,6 +19,7 @@ function App() {
       <Route path="/ideas" element={<TestDashboard/>} />
       <Route path="/chat" element={<Message/>} />
       <Route path="/live" element={<LiveClasses/>} />
+       <Route path="/test/:category" element={<TestPage />} />
       <Route path="/courses/:id" element={<CourseDetails />} />
     </Routes>
   )
