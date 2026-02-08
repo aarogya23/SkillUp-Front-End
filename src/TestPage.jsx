@@ -10,7 +10,7 @@ const TestPage = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch(`http://localhost:8080/mcq/category/${category}`)
+    fetch(`http://localhost:8083/mcq/category/${category}`)
       .then(res => res.json())
       .then(data => setQuestions(data))
       .catch(err => console.error(err))
