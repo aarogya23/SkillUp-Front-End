@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 const TestDashboard = () => {
   const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   // Fetch all questions and extract unique categories
@@ -13,8 +14,12 @@ const TestDashboard = () => {
       .then(data => {
         const uniqueCategories = [...new Set(data.map(q => q.category))]
         setCategories(uniqueCategories)
+        setLoading(false)
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+        setLoading(false)
+      })
   }, [])
 
   const StatCard = ({ icon, value, label, color }) => (
@@ -61,7 +66,7 @@ const TestDashboard = () => {
 
         {/* STATS OVERVIEW */}
         <p className="text-xs text-gray-400 font-semibold mb-4">OVERVIEW</p>
-        <div className="flex gap-6 mb-8">
+        <div className="flex gap-6 mb-8 flex-wrap">
           <StatCard icon="📋" value={categories.length} label="Total Categories" color="bg-blue-50" />
           <StatCard icon="✅" value="3" label="Tests Completed" color="bg-green-50" />
           <StatCard icon="📊" value="85%" label="Average Score" color="bg-purple-50" />
@@ -92,18 +97,22 @@ const TestDashboard = () => {
 
         {/* CATEGORIES */}
         <p className="text-xs text-gray-400 font-semibold mb-4">CATEGORIES</p>
-        <div className="grid grid-cols-3 gap-6 mb-8">
-          {categories.map((category, i) => (
-            <div
-              key={i}
-              onClick={() => navigate(`/test/${category}`)}
-              className="cursor-pointer bg-blue-100 hover:bg-blue-200 p-6 rounded-xl transition"
-            >
-              <h2 className="text-xl font-semibold">{category}</h2>
-              <p className="text-sm text-gray-600">Start Test</p>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading categories...</p>
+        ) : (
+          <div className="grid grid-cols-3 gap-6 mb-8">
+            {categories.map((category, i) => (
+              <div
+                key={i}
+                onClick={() => navigate(`/test/${category}`)}
+                className="cursor-pointer bg-blue-100 hover:bg-blue-200 p-6 rounded-xl transition text-center"
+              >
+                <h2 className="text-xl font-semibold">{category}</h2>
+                <p className="text-sm text-gray-600 mt-1">Start Test</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* RIGHT PANEL */}

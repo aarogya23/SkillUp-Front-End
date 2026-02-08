@@ -8,6 +8,7 @@ import TestDashboard from "./TestDashboard"
 import Message from "./Message"
 import LiveClasses from "./LiveClass"
 import CourseDetails from "./CourseDetails"
+import TestPage from "./Testpage"
 
 function App() {
   return (
