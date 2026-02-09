@@ -91,8 +91,8 @@ const TestPage = () => {
       <Sidebar />
 
       {/* LEFT SIDEBAR - LESSONS/SECTIONS */}
-      <div className="w-72 bg-white border-r border-gray-200 ml-20">
-        <div className="p-6">
+      <div className="w-80 bg-white border-r border-gray-200">
+        <div className="p-6 pt-8">
           {/* Back button */}
           <button 
             onClick={() => navigate('/')}
@@ -128,9 +128,9 @@ const TestPage = () => {
       </div>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 p-8">
+      <div className="flex-1 px-12 py-8 bg-white">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
           <div>
             <h1 className="text-3xl font-bold text-gray-800 mb-1">Mcqs</h1>
             <p className="text-gray-600">{currentQuestion.section || 'Basic DSA Question'}</p>
@@ -160,7 +160,7 @@ const TestPage = () => {
         </div>
 
         {/* Question Card */}
-        <div className="max-w-4xl bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <div className="max-w-5xl bg-white rounded-lg shadow-sm border border-gray-100 p-10">
           {/* Timer */}
           <div className="flex justify-end mb-6">
             <span className="bg-blue-500 text-white text-sm font-semibold px-4 py-1.5 rounded-full">
@@ -175,16 +175,16 @@ const TestPage = () => {
             </h2>
 
             {/* Options */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               {['optionA', 'optionB', 'optionC', 'optionD'].map(opt => (
                 <button
                   key={opt}
                   onClick={() => setSelectedOption(currentQuestion[opt])}
-                  className={`w-full text-left px-5 py-4 rounded-lg border transition
+                  className={`w-full text-left px-6 py-5 rounded-xl border-2 transition text-base
                     ${
                       selectedOption === currentQuestion[opt]
                         ? 'bg-blue-50 border-blue-500 text-gray-800'
-                        : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
+                        : 'bg-gray-50 border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-100'
                     }`}
                 >
                   {currentQuestion[opt]}
@@ -194,75 +194,40 @@ const TestPage = () => {
           </div>
 
           {/* Progress and Navigation */}
-          <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-            <div className="flex items-center gap-3 flex-1">
-              <span className="text-sm text-gray-600">
+          <div className="flex items-center justify-between pt-8 border-t border-gray-100 mt-8">
+            <div className="flex items-center gap-4 flex-1">
+              <span className="text-sm text-gray-600 font-medium">
                 Question {currentIndex + 1} of {filteredQuestions.length}
               </span>
-              <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-md">
+              <div className="flex-1 bg-gray-200 rounded-full h-2.5 max-w-md">
                 <div 
-                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                  className="bg-blue-500 h-2.5 rounded-full transition-all duration-300"
                   style={{ width: `${((currentIndex + 1) / filteredQuestions.length) * 100}%` }}
                 />
               </div>
             </div>
 
-            {currentIndex + 1 === filteredQuestions.length ? (
-              <button
-                onClick={handleSubmit}
-                disabled={!selectedOption}
-                className="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-8 py-2.5 rounded-lg font-medium transition"
-              >
-                Submit
-              </button>
-            ) : (
-              <button
-                onClick={handleNext}
-                disabled={!selectedOption}
-                className="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-8 py-2.5 rounded-lg font-medium transition"
-              >
-                Next
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* All Questions Preview (Optional - shown below) */}
-        {filteredQuestions.length > 1 && (
-          <div className="max-w-4xl mt-6 bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">All Questions</h3>
-            <div className="space-y-6">
-              {filteredQuestions.slice(0, 3).map((q, idx) => (
-                <div key={idx} className="pb-6 border-b border-gray-100 last:border-b-0">
-                  <h4 className="text-base font-semibold text-gray-800 mb-3">
-                    {idx + 1}. {q.question}
-                  </h4>
-                  <div className="space-y-2">
-                    {['optionA', 'optionB', 'optionC', 'optionD'].map(opt => (
-                      <div
-                        key={opt}
-                        className="px-5 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700"
-                      >
-                        {q[opt]}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-between mt-4">
-                    <span className="text-sm text-gray-600">
-                      Question {idx + 1} of {filteredQuestions.length}
-                    </span>
-                    <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-xs mx-4">
-                      <div 
-                        className="bg-blue-500 h-2 rounded-full"
-                        style={{ width: `${((idx + 1) / filteredQuestions.length) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="flex gap-3">
+              {currentIndex + 1 === filteredQuestions.length ? (
+                <button
+                  onClick={handleSubmit}
+                  disabled={!selectedOption}
+                  className="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-10 py-3 rounded-lg font-semibold transition shadow-sm hover:shadow-md"
+                >
+                  Submit
+                </button>
+              ) : (
+                <button
+                  onClick={handleNext}
+                  disabled={!selectedOption}
+                  className="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-10 py-3 rounded-lg font-semibold transition shadow-sm hover:shadow-md"
+                >
+                  Next
+                </button>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   )
